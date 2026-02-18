@@ -1,28 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Signup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h2>Signup</h2>
+<body class="bg-[#0c0c0e] flex items-center justify-center h-screen">
+  <div class="w-full max-w-sm p-8 bg-zinc-900/50 border border-zinc-800 rounded-3xl shadow-2xl">
+    <h2 class="text-3xl font-extrabold text-white mb-2 italic">SIGN UP</h2>
+    <div class="h-1 w-12 bg-blue-500 mb-8"></div>
 
-  <input id="username" placeholder="Username"><br><br>
-  <input id="password" type="password" placeholder="Password"><br><br>
-  <button onclick="signup()">Signup</button>
+    <div class="space-y-4">
+      <div class="group">
+        <label class="text-xs text-zinc-500 font-bold uppercase mb-1 block">Username</label>
+        <input id="username" class="w-full p-3 bg-zinc-800 rounded-xl text-white outline-none ring-2 ring-transparent focus:ring-blue-500 transition-all">
+      </div>
+      <div class="group">
+        <label class="text-xs text-zinc-500 font-bold uppercase mb-1 block">Password</label>
+        <input id="password" type="password" class="w-full p-3 bg-zinc-800 rounded-xl text-white outline-none ring-2 ring-transparent focus:ring-blue-500 transition-all">
+      </div>
+      <button onclick="signup()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-xl text-white font-black tracking-widest transition-all">CREATE ACCOUNT</button>
+    </div>
+
+    <p class="mt-6 text-center text-zinc-400">Member? <a href="login.html" class="text-white hover:text-blue-400 underline underline-offset-4">Log in</a></p>
+  </div>
 
   <script>
     async function signup() {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
-
       await fetch("http://localhost:3000/signup", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
       });
-
       alert("Signup complete");
     }
   </script>

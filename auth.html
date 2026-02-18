@@ -1,63 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Auth</title>
+  <meta charset="UTF-8">
+  <title>Authenticate</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    body { background: radial-gradient(circle at top right, #18181b, #09090b); }
+    .glass { background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(63, 63, 70, 0.5); }
+  </style>
 </head>
+<body class="flex items-center justify-center h-screen text-zinc-100 p-6">
+  <div class="glass p-8 rounded-3xl w-full max-w-sm shadow-2xl animate__animated animate__fadeInUp">
+    <div id="formContainer" class="animate__animated">
+      <h2 id="title" class="text-3xl font-bold mb-2 text-center bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">Login</h2>
+      <p id="subtitle" class="text-zinc-500 text-center mb-8 text-sm">Enter your credentials to continue</p>
 
-<body class="bg-black flex items-center justify-center h-screen text-white">
+      <div class="space-y-4">
+        <input id="username" placeholder="Username" class="w-full p-3 bg-zinc-800/50 rounded-xl border border-zinc-700 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+        <input id="password" type="password" placeholder="Password" class="w-full p-3 bg-zinc-800/50 rounded-xl border border-zinc-700 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all" />
+        <button onclick="submitForm()" class="w-full bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold p-3 rounded-xl shadow-lg shadow-blue-900/20 transition-all">Submit</button>
+      </div>
 
-  <div class="bg-zinc-900 p-8 rounded-2xl w-80 shadow-lg">
-    <h2 id="title" class="text-2xl mb-6 text-center">Login</h2>
-
-    <input id="username" placeholder="Username"
-      class="w-full p-2 mb-3 bg-zinc-800 rounded outline-none" />
-
-    <input id="password" type="password" placeholder="Password"
-      class="w-full p-2 mb-4 bg-zinc-800 rounded outline-none" />
-
-    <button onclick="submitForm()"
-      class="w-full bg-blue-600 hover:bg-blue-700 p-2 rounded">
-      Submit
-    </button>
-
-    <p class="text-center mt-4 text-sm">
-      <span id="toggleText">Don't have an account?</span>
-      <button onclick="toggleMode()" class="text-blue-400">Signup</button>
-    </p>
+      <p class="text-center mt-6 text-sm text-zinc-400">
+        <span id="toggleText">Don't have an account?</span>
+        <button onclick="toggleMode()" class="text-blue-400 hover:underline font-medium">Signup</button>
+      </p>
+    </div>
   </div>
 
-<script>
-let mode = "login";
+  <script>
+    let mode = "login";
+    function toggleMode() {
+      const container = document.getElementById("formContainer");
+      container.classList.add("animate__fadeOut");
+      
+      setTimeout(() => {
+        mode = mode === "login" ? "signup" : "login";
+        document.getElementById("title").innerText = mode === "login" ? "Login" : "Create Account";
+        document.getElementById("subtitle").innerText = mode === "login" ? "Enter your credentials to continue" : "Join our community today";
+        document.getElementById("toggleText").innerText = mode === "login" ? "Don't have an account?" : "Already have an account?";
+        event.target.innerText = mode === "login" ? "Signup" : "Login";
+        
+        container.classList.remove("animate__fadeOut");
+        container.classList.add("animate__fadeIn");
+      }, 300);
+    }
 
-function toggleMode() {
-  mode = mode === "login" ? "signup" : "login";
-
-  document.getElementById("title").innerText =
-    mode === "login" ? "Login" : "Signup";
-
-  document.getElementById("toggleText").innerText =
-    mode === "login"
-      ? "Don't have an account?"
-      : "Already have an account?";
-}
-
-async function submitForm() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  const res = await fetch(`http://localhost:3000/${mode}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ username, password })
-  });
-
-  const text = await res.text();
-  alert(text);
-}
-</script>
-
+    async function submitForm() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const res = await fetch(`http://localhost:3000/${mode}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+      alert(await res.text());
+    }
+  </script>
 </body>
 </html>
