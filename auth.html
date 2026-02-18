@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auth</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black flex items-center justify-center h-screen text-white">
+
+  <div class="bg-zinc-900 p-8 rounded-2xl w-80 shadow-lg">
+    <h2 id="title" class="text-2xl mb-6 text-center">Login</h2>
+
+    <input id="username" placeholder="Username"
+      class="w-full p-2 mb-3 bg-zinc-800 rounded outline-none" />
+
+    <input id="password" type="password" placeholder="Password"
+      class="w-full p-2 mb-4 bg-zinc-800 rounded outline-none" />
+
+    <button onclick="submitForm()"
+      class="w-full bg-blue-600 hover:bg-blue-700 p-2 rounded">
+      Submit
+    </button>
+
+    <p class="text-center mt-4 text-sm">
+      <span id="toggleText">Don't have an account?</span>
+      <button onclick="toggleMode()" class="text-blue-400">Signup</button>
+    </p>
+  </div>
+
+<script>
+let mode = "login";
+
+function toggleMode() {
+  mode = mode === "login" ? "signup" : "login";
+
+  document.getElementById("title").innerText =
+    mode === "login" ? "Login" : "Signup";
+
+  document.getElementById("toggleText").innerText =
+    mode === "login"
+      ? "Don't have an account?"
+      : "Already have an account?";
+}
+
+async function submitForm() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch(`http://localhost:3000/${mode}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username, password })
+  });
+
+  const text = await res.text();
+  alert(text);
+}
+</script>
+
+</body>
+</html>
